@@ -1,3 +1,4 @@
+
 <div style="width:100%;background-color:red">
 
         <input type="button" id="button_bio" value="ประวัติทั่วไป" class="<?=$modData=="personal_add"?"btnActive":"btn"?>" onclick="goPage('?mod=<?php echo lurl::dotPage("personal_add&id=$PersonalId");?>')" />
