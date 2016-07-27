@@ -110,12 +110,12 @@ class sFunction extends sHelper{
 			mkdir($this->PathUpload,0777);
 		}
 		//Generates dataset BoardTypeId
-		/*$BoardTypeId=$_POST['BoardTypeId'];
+		$BoardTypeId=$_POST['BoardTypeId'];
 		foreach ($BoardTypeId as $value){
 			 $bvalue .= $value.",";
-		}*/
+		}
 		$_POST['BoardTypeId'] = $bvalue; //1,5,8,7
-		$_POST['BoardTypeId'] = '1,5,8,7'; //1,5,8,7
+		//$_POST['BoardTypeId'] = '1,5,8,7'; //1,5,8,7
 
 		//change name
 
