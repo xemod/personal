@@ -38,7 +38,7 @@ function icoDelete($PersonalId,$ContractId){
 /* <![CDATA[ */
 __debug = false;
 
-function ValidateForm(f){
+function ValidateForm(){
 
 
      if(JQ('#ContractNo').val() == ''){
@@ -88,7 +88,7 @@ function Save(f){
 }
 
 function Detail(f){
-	if(ValidateForm(f)){
+	if(ValidateForm()){
 		var firm_url = '?mod=<?php echo LURL::dotPage($actionPage);?>';
 		goDetail(f,'contractconfirm',firm_url);
 	}
@@ -121,7 +121,15 @@ function Detail(f){
 <input type="hidden" name="PictureFile" value="<?=$PictureFile?>">
 <input type="hidden" name="action" id="action" value="" />
 <input type="hidden" name="PersonalId" id="PersonalId" value="<?php echo $_GET['id']?>" />
-<h3>เพิ่ม/แก้ไขสัญญา</h3>
+
+<?php
+	if(isset($_GET["edit"])){
+		echo "<h3>เพิ่ม/แก้ไขสัญญา - <span style=\"color:red\">กำลังแก้ไขสัญญา</span> <img src=\"/images/red2.gif\" border=\"0\" /></h3>";
+	}else{
+		echo "<h3>เพิ่ม/แก้ไขสัญญา</h3>";
+	}
+
+ ?>
 <table width="100%" border="0" cellspacing="1" cellpadding="1">
   <tr>
     <td><span>กรุณาใส่ข้อมูลตรงช่องที่มีเครื่องหมาย </span><span class="require">*</span></td>
@@ -254,6 +262,7 @@ function Detail(f){
     <th style="width:50px;">จำนวน</th>
     <th style="width:130px;">สัญญาคงเหลือ</th>
     <th style="width:100px;">ตำแหน่ง</th>
+		<th style="width:100px;">อัตรา</th>
     <th style="width:100px;">ไฟล์</th>
     <th>หมายเหตุ</th>
     </tr>
@@ -306,7 +315,17 @@ function Detail(f){
               ?>
             </td>
             <td><?=$get->getListPositionTypeTxt($PositionTypeId)?></td>
-            <td><?="<a href='upload/personal/contract/$ContractFilename' target='new'>$ContractNo</a>";?></td>
+						<td><?=$get->getListManPowerTypeTxt($ManPowerId)?></td>
+						<td>
+						<?php
+							if($ContractFilename != NULL){
+								echo "<a href='upload/personal/contract/$ContractFilename' target='new'>$ContractNo</a>";
+							}else{
+								echo "-";
+							}
+
+						 ?>
+					 </td>
             <td><?=htmlspecialchars($ContractNote)?></td>
            </tr>
 

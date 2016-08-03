@@ -55,8 +55,21 @@ include($KeyPage."_data.php");
   <tr>
     <th>มติบอร์ด</th>
     <td></td>
-    <td colspan="2"><?=$get->getListBoardTypeTxt($BoardTypeId);?> </td>
+    <td colspan="2">
+			<?php
+			foreach ($BoardTypeId as $value){
+				 echo $get->getListBoardTypeTxt($value)."<br>";
+			}
+			?>
+		 </td>
   </tr>
+	<tr>
+		<th>อัตากำลัง</th>
+		<td></td>
+		<td colspan="2">
+			<?=$get->getListManPowerTypeTxt($ManPowerId);?>
+		 </td>
+	</tr>
   <tr>
     <th>เงินเดือน</th>
     <td></td>
