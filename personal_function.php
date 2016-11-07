@@ -104,18 +104,12 @@ class sFunction extends sHelper{
 	}
 	function ContractSave(){
 
+
 	if((is_uploaded_file($_FILES["ContractFilename"]["tmp_name"]))){
 
 		if(!is_dir($this->PathUpload)){
 			mkdir($this->PathUpload,0777);
 		}
-		//Generates dataset BoardTypeId
-		/*$BoardTypeId=$_POST['BoardTypeId'];
-		foreach ($BoardTypeId as $value){
-			 $bvalue .= $value.",";
-		}*/
-		$_POST['BoardTypeId'] = $bvalue; //1,5,8,7
-		$_POST['BoardTypeId'] = '1,5,8,7'; //1,5,8,7
 
 		//change name
 
@@ -137,7 +131,14 @@ class sFunction extends sHelper{
 			$_POST["ContractFilename"] = $_POST["ContractFilenameOld"];
 	}
 
-	mysql_query("UPDATE tblpersonal_contract SET EnableStatus='N' WHERE PersonalId=".$_POST["PersonalId"]);
+	//Generates dataset BoardTypeId
+	$BoardTypeId=$_POST['BoardTypeId'];
+	foreach ($BoardTypeId as $value){
+		 $bvalue .= $value.",";
+	}
+	$_POST['BoardTypeId'] = rtrim($bvalue,",");
+
+	//mysql_query("UPDATE tblpersonal_contract SET EnableStatus='N' WHERE PersonalId=".$_POST["PersonalId"]);
 
 	//Enble ล่าสุด
 	$_POST["EnableStatus"]=="Y";
@@ -162,8 +163,7 @@ class sFunction extends sHelper{
 			echo ltxt::_('Error!','jalert');
 		}
 
-
-
+		print_r($_POST);
 	}
 
 	function SecureSave(){

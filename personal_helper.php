@@ -290,11 +290,17 @@ function getSecureByContractNo(&$SecureData,$ContractNo=""){
 		function getListBoardType($BoardTypeId=''){
 			$sql = "select BoardTypeId as value,BoardType as text from tblpersonal_board where EnableStatus='Y' ";
 			$this->db->setQuery($sql);
-			$title[] = clssHTML::makeOption('','กรุณาเลือก(กด ctrl เพื่อเลือก)');
-			$subCate = $this->db->loadObjectList();
-			$subCate = array_merge($title,$subCate);
-			echo clssHTML::selectList( $subCate, 'BoardTypeId[]', 'multiple', 'value', 'text', $BoardTypeId );
-
+			//$title[] = clssHTML::makeOption('','กรุณาเลือก(กด ctrl เพื่อเลือก)');
+			$subCate = $this->db->loadArrayList();
+			echo "<select multiple name=\"BoardTypeId[]\" id=\"BoardTypeId\" >\n";
+			echo "<option disabled>กดปุ่ม ctrl ค้างเพื่อเลือก</option>";
+			foreach ($subCate as $k) {
+					echo "<option value=\"".$k["value"]."\"";
+					if(strpos($BoardTypeId,(string)$k["value"])!==false) echo " selected ";
+					echo ">".$k["text"]."</option>\n";
+			}
+			echo "</select>\n";
+			//echo clssHTML::selectList( $subCate, 'BoardTypeId[]', 'multiple', 'value', 'text', $BoardTypeId );
 		}
 
 
@@ -378,6 +384,12 @@ function getSecureByContractNo(&$SecureData,$ContractNo=""){
 		return $txt;
 	}
 
+	function getListManPowerTypeTxt($ManPowerId=''){
+		$sql = "select ManPowerName from tblpersonal_manpower where ManPowerId='$ManPowerId' ";
+		$this->db->setQuery($sql);
+		$txt = $this->db->loadResult();
+		return $txt;
+	}
 
 
 	function getListPositionType($PositionTypeId=''){

@@ -30,6 +30,7 @@ if($action = ltxt::getVar( 'action','req' )) {
 			$tsk->RedirectPage($listPage);
 			$tsk->setUploadPath($PathUpload);
 			$tsk->ContractSave();
+			exit;
 		break;
 		case "securesave":
 			$tsk->RedirectPage($listPage);
