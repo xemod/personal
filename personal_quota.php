@@ -70,7 +70,8 @@ while ($row = mysql_fetch_assoc($result)) {
 	$i++;
 }
 echo "</table>";
-?>*/
+*/
+?>
 <br>
 <p><strong>สรุป</stong></p>
 <table width="50%" border="0" class="tbl-list" cellspacing="2">
