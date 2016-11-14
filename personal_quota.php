@@ -10,7 +10,7 @@ $this->DOC->setPathWays(array(
 		'link' => '?mod='.lurl::dotPage($startupPage)
 	),
 	array(
-		'text' => $MenuName,
+		'text' => $MenuName."-กรอบอัตรกำลัง",
 	),
 ));
 
@@ -22,7 +22,7 @@ $this->DOC->setPathWays(array(
 
 <div class="sysinfo">
   <div class="sysname"><?php echo $MenuName;?></div>
-  <div class="sysdetail">แสดงโควตาของแต่ละส่วนงาน</div>
+  <div class="sysdetail">แสดงกรอบอัตรากำลังของแต่ละส่วนงาน</div>
 </div>
 
 
@@ -30,8 +30,8 @@ $this->DOC->setPathWays(array(
 	<tr>
     <th class="no" width="40">ลำดับ</th>
     <th align="left">ส่วนงาน</th>
-    <th align="left">โควตากำลังคน</th>
-		<th align="left">กำลังคนปัจจุบัน</th>
+    <th align="left">กรอบอัตรกำลัง</th>
+		<th align="left">กำลังคนปัจจุบัน(จำนวน)</th>
 		<th align="left">ส่วนต่าง</th>
   </tr>
 
@@ -39,6 +39,11 @@ $this->DOC->setPathWays(array(
 $i=1;
 $quata1=0;
 $quata2=0;
+
+$sql="SELECT * FROM tblpersonal_quota";
+$resultQuota = mysql_query($sql);
+	while($row = mysql_fetch_assoc(ultQuota))
+
 
 $sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower group by QuotaId";
 $result = mysql_query($sql);
