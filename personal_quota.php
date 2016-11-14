@@ -42,8 +42,8 @@ $quata2=0;
 
 $sql="SELECT * FROM tblpersonal_quota";
 $resultQuota = mysql_query($sql);
-	while($row = mysql_fetch_assoc(ultQuota))
-
+	while($row = mysql_fetch_assoc(ultQuota)){
+	}
 
 $sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower group by QuotaId";
 $result = mysql_query($sql);
