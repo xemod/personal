@@ -42,10 +42,12 @@ $quata2=0;
 
 $sql="SELECT * FROM tblpersonal_quota";
 $resultQuota = mysql_query($sql);
-	while($row = mysql_fetch_assoc(ultQuota)){
+	while($rowQuoata = mysql_fetch_assoc($resultQuota)){
+		echo $sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower WHERE QuotaId ='".$rowQuoata['Type']."'group by QuotaId";
+		//$result = mysql_query($sql);
 	}
 
-$sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower group by QuotaId";
+/*$sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower group by QuotaId";
 $result = mysql_query($sql);
 
 while ($row = mysql_fetch_assoc($result)) {
@@ -68,7 +70,7 @@ while ($row = mysql_fetch_assoc($result)) {
 	$i++;
 }
 echo "</table>";
-?>
+?>*/
 <br>
 <p><strong>สรุป</stong></p>
 <table width="50%" border="0" class="tbl-list" cellspacing="2">
