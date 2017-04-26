@@ -24,14 +24,16 @@ $this->DOC->setPathWays(array(
   <div class="sysname"><?php echo $MenuName;?></div>
   <div class="sysdetail">สรุปกฏระเบียบที่เกี่ยวข้องกับงานบริหารงานบุคคล</div>
 </div>
-<table border="1">
+<table>
 <tbody>
 	<tr>
 		<td><strong>ประเด็น</strong></td>
 		<td><strong>ข้อบังคับ ระเบียบ ประกาศ</strong></td>
 	</tr>
 	<tr>
-		<td><strong>ส่วนที่ 1 กระบวนการคัดเลือก บรรจุ แต่งตั้ง โยกย้าย เลื่อนระดับ การพิจารณาตามความดีความชอบ การให้สิทธิประโยชน์</strong></td>
+		<td colspan="2">
+			<strong>ส่วนที่ 1 กระบวนการคัดเลือก บรรจุ แต่งตั้ง โยกย้าย เลื่อนระดับ การพิจารณาตามความดีความชอบ การให้สิทธิประโยชน์</strong>
+		</td>
 	</tr>
 <tr>
 <td>1 . การคัดเลือก</td>
