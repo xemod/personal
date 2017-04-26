@@ -1,6 +1,6 @@
 <?php
-/*error_reporting(E_ALL & ~(E_STRICT|E_NOTICE));
-ini_set('display_errors', 1);*/
+//error_reporting(E_ALL & ~(E_STRICT|E_NOTICE));
+//ini_set('display_errors', 1);
 include("config.php");
 include($KeyPage."_helper.php");
 include($KeyPage."_data.php");
@@ -25,7 +25,7 @@ $this->DOC->setPathWays(array(
   <div class="sysdetail">แสดงกรอบอัตรากำลังของแต่ละส่วนงาน</div>
 </div>
 
-
+<br id="top"><br>
 <table width="80%" border="0" class="tbl-list" cellspacing="2">
 	<tr>
     <th class="no" width="40">ลำดับ</th>
@@ -33,61 +33,84 @@ $this->DOC->setPathWays(array(
     <th align="left">กรอบอัตรกำลัง</th>
 		<th align="left">กำลังคนปัจจุบัน(จำนวน)</th>
 		<th align="left">ส่วนต่าง</th>
+		<th align="left">รายเอียด</th>
   </tr>
 
 <?php
 $i=1;
-$quata1=0;
-$quata2=0;
+$quota1=0;
+$quota2=0;
+$ShowRowData = array();
 
-$sql="SELECT * FROM tblpersonal_quota";
+$sql="SELECT * FROM tblpersonal_quota_section";
 $resultQuota = mysql_query($sql);
 	while($rowQuoata = mysql_fetch_assoc($resultQuota)){
-		echo $sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower WHERE QuotaId ='".$rowQuoata['Type']."'group by QuotaId";
-		//$result = mysql_query($sql);
+
+		$sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower WHERE QuotaId ='".$rowQuoata['QuotaId']."'group by QuotaId";
+		$sql2="SELECT * FROM vw_manpower WHERE QuotaId =".$rowQuoata['QuotaId']." Order By Position";
+		//make DATA
+				$resultData = mysql_query($sql2);
+				while($rowData=mysql_fetch_assoc($resultData)){
+					$ShowRowDataLable[$i] = $rowQuoata["QuotaName"];
+					$ShowRowData[$i] .= "<tr><td width=25%>".$rowData['FullName']."</td><td width=25%>".$rowData['Position']."</td><td>".$rowData['ManpowerName']."</td></tr>";
+				}
+		$result=mysql_fetch_assoc(mysql_query($sql));
+
+		$diff = $rowQuoata['QuotaNum']-$result["num"];
+		echo "<tr><td>$i</td>";
+		echo "<td>".$rowQuoata["QuotaName"]."</td>";
+		echo "<td align='center'><strong>".$rowQuoata['QuotaNum']."</strong></td>";
+		echo "<td align='center'><strong>".$result["num"]."</strong></td>";
+
+		if($diff == 0){
+			echo "<td style=\"color:blue\"><strong>เท่ากับกรอบอัตรากำลัง</strong></td>";
+		}else if($diff > 0){
+			echo "<td style=\"color:green\"><strong>บรรจุได้อีก ".abs($diff)." อัตรา</strong></td>";
+		}else{
+			echo "<td style=\"color:red\"><strong>กรอบเกินอัตรา ".abs($diff)." อัตรา</strong></td>";
+		}
+		echo "<td><a href=\"#show".$i."\"><img src=\"/images/user.png\" border='0' /> คลิกรายเอียด</a> </td>";
+		echo "</tr>";
+		$quota1 = $quota1 + $rowQuoata['QuotaNum'];//sum
+		$quota2 = $quota2 + $result["num"];//sum
+		$i++;
+
+
+
 	}
-
-/*$sql="SELECT QuotaId,count(QuotaId) as num FROM vw_manpower group by QuotaId";
-$result = mysql_query($sql);
-
-while ($row = mysql_fetch_assoc($result)) {
-	echo "<tr><td>$i</td>";
-	$sqlqouta = "Select * from tblpersonal_quota WHERE Type=".$row["QuotaId"];
-	$qouta = mysql_fetch_assoc(mysql_query($sqlqouta));
-	$diff = $qouta["QuotaNum"]-$row["num"];
-
-	echo "<td>".$qouta["QuotaName"]."</td>";
-	echo "<td><strong>".$qouta["QuotaNum"]."</strong></td>";
-	echo "<td><strong>".$row["num"]."</strong></td>";
-	if($diff < 1){
-		echo "<td style=\"color:red\"><strong>$diff</strong></td>";
-	}else{
-		echo "<td style=\"color:green\"><strong>+$diff</strong></td>";
-	}
-	echo "</tr>";
-	$quata1+=$row["num"];
-	$quata2+=$qouta["QuotaNum"];
-	$i++;
-}
 echo "</table>";
-*/
+
 ?>
+
 <br>
-<p><strong>สรุป</stong></p>
-<table width="50%" border="0" class="tbl-list" cellspacing="2">
+<h3>สรุป</h3>
+<table width="80%" border="0" class="tbl-list" cellspacing="2">
 <?php
-echo "<tr><td>โควตาอัตรากำลังคน </td><td> $quata1 อัตรา</td></tr>";
-echo "<tr><td>จำนวนบรรจุจริง </td><td> <strong  style=\"color:red\">$quata2</strong> อัตรา</td></tr>";
-
-if($quata1<$quata2){
-	echo "<td colspan=\"2\">จำนวนอัตรากำลังคน เกินอัตรา ".$quata2-$quata1." อัตรา</td>";
-}elseif($quata1>$quata2){
-	echo "<td colspan=\"2\">จำนวนอัตรากำลังคน สามารถบรรจุได้ ".$quata1-$quata2." อัตรา</td>";
+$diffsum = $quota1 - $quota2;
+echo "<tr><td>กรอบอัตรากำลังคน </td><td> $quota1 อัตรา</td></tr>";
+echo "<tr><td>จำนวนบรรจุจริง </td><td> <strong>$quota2</strong> อัตรา</td></tr>";
+echo "<tr><td colspan='2'>";
+if($diffsum == 0){
+	echo "<strong>เท่ากับกรอบอัตรากำลัง</strong>";
+}else if($diffsum > 0){
+	echo "<strong style=\"color:green\">สามารถบรรจุกำลังคนเพิ่มได้ ".abs($diffsum)." อัตรา</strong>";
 }else{
-	echo "<td colspan=\"2\" style=\"color:green\">จำนวนอัตรากำลังคนเท่ากับจำนวนโควตา $quata1 อัตรา</td>";
+	echo "<strong style=\"color:red\">เกินกรอบอัตรากำลังคน ".abs($diffsum)." อัตรา</strong>";
 }
-echo "</table>";
+echo "</td></tr></table>";
 
-mysql_free_result($result);
+echo "<br><br><br><br><h3>ข้อมูล - การบรรจุอัตรากำลังคน</h3>";
+
+
+for($x=1;$x<=6;$x++){
+	echo "<table width=\"80%\" border=\"0\" cellpadding=\"5\"  style='color:#666' class=\"tbl-list\">";
+	echo "<tr bgcolor='#c4c4c4' id='show".$x."'><td colspan='3'><img src=\"/images/people.png\" border=0 /> <strong>".$ShowRowDataLable[$x]."</strong></td></tr>";
+	echo $ShowRowData[$x];
+	echo "</table><br /><br /><br /><a href=\"#modules\">^ ด้านบน</a>";
+}
+
+
+
+
 
 ?>
